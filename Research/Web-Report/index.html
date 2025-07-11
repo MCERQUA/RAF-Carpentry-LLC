@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAF Carpentry LLC - Digital Presence Research Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --dark-secondary: #1e293b;
+            --gray: #64748b;
+            --light: #f8fafc;
+            --white: #ffffff;
+            
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--gray);
+            background: var(--gradient-dark);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .company-name {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .report-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .score-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .overall-score {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--danger);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-label {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .status-critical {
+            display: inline-block;
+            background: var(--danger);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .metric-name {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--danger);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-status {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .finding-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .finding-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .finding-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-missing {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .status-limited {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        .finding-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .finding-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+
+        .finding-list li:last-child {
+            border-bottom: none;
+        }
+
+        .opportunity-item {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .opportunity-title {
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 0.5rem;
+        }
+
+        .opportunity-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .competitive-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .competitor-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .competitor-name {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .competitor-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .competitor-strengths {
+            margin-bottom: 1rem;
+        }
+
+        .competitor-strengths h4 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .roadmap-phase {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .phase-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .phase-number {
+            background: var(--primary);
+            color: var(--white);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .action-items {
+            list-style: none;
+            padding: 0;
+        }
+
+        .action-items li {
+            padding: 0.5rem 0;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-items li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .research-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .research-link {
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .research-link:hover {
+            background: rgba(37, 99, 235, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .link-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .link-desc {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .cta-section {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .cta-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .company-name {
+                font-size: 2rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .findings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .competitive-analysis {
+                grid-template-columns: 1fr;
+            }
+            
+            .research-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .warning-banner {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .warning-text {
+            color: var(--danger);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .warning-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="company-name">RAF Carpentry, LLC</h1>
+                <p class="report-subtitle">Digital Presence Research Report</p>
+                <div class="report-meta">
+                    <span>Prepared by Echo AI Systems</span>
+                    <span>•</span>
+                    <span>July 11, 2025</span>
+                    <span>•</span>
+                    <span>Orange Park, FL Market Analysis</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="warning-banner">
+            <div class="warning-text">⚠️ Critical Business Status Issue Identified</div>
+            <div class="warning-desc">Florida state records show RAF Carpentry, LLC as "Inactive" status. Business reactivation required before implementing digital marketing strategies.</div>
+        </div>
+
+        <!-- Digital Footprint Score -->
+        <section class="glass-container">
+            <h2 class="section-title">
+                📊 Your Digital Footprint Score
+            </h2>
+            
+            <div class="score-container">
+                <div class="overall-score">1/10</div>
+                <div class="score-label">Current Digital Presence</div>
+                <span class="status-critical">CRITICAL - Immediate Action Required</span>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-name">Website Presence</div>
+                    <div class="metric-score">0/10</div>
+                    <div class="metric-status">No website exists</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name">Search Visibility</div>
+                    <div class="metric-score">0/10</div>
+                    <div class="metric-status">No search rankings</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name">Social Media</div>
+                    <div class="metric-score">2/10</div>
+                    <div class="metric-status">Instagram only (255 followers)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name">Online Reputation</div>
+                    <div class="metric-score">0/10</div>
+                    <div class="metric-status">No reviews found</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name">Local SEO</div>
+                    <div class="metric-score">0/10</div>
+                    <div class="metric-status">No Google Business Profile</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-name">Content Strategy</div>
+                    <div class="metric-score">0/10</div>
+                    <div class="metric-status">No content marketing</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Findings -->
+        <section class="glass-container">
+            <h2 class="section-title">
+                🔍 Key Research Findings
+            </h2>
+            
+            <div class="findings-grid">
+                <div class="finding-card">
+                    <h3 class="finding-title">
+                        <span class="status-icon status-missing">✗</span>
+                        Website & SEO
+                    </h3>
+                    <ul class="finding-list">
+                        <li>No company website exists</li>
+                        <li>Zero search engine visibility</li>
+                        <li>Missing from all organic search results</li>
+                        <li>No domain authority or backlinks</li>
+                        <li>Competitors dominate search results</li>
+                    </ul>
+                </div>
+                
+                <div class="finding-card">
+                    <h3 class="finding-title">
+                        <span class="status-icon status-missing">✗</span>
+                        Google Business Profile
+                    </h3>
+                    <ul class="finding-list">
+                        <li>No Google Business listing found</li>
+                        <li>Missing from Google Maps searches</li>
+                        <li>Zero customer reviews</li>
+                        <li>No business hours or contact info</li>
+                        <li>Invisible in "near me" searches</li>
+                    </ul>
+                </div>
+                
+                <div class="finding-card">
+                    <h3 class="finding-title">
+                        <span class="status-icon status-limited">⚠</span>
+                        Social Media Presence
+                    </h3>
+                    <ul class="finding-list">
+                        <li>Instagram account: 255 followers, 62 posts</li>
+                        <li>No Facebook business page</li>
+                        <li>No LinkedIn company profile</li>
+                        <li>No YouTube channel</li>
+                        <li>Limited social media strategy</li>
+                    </ul>
+                </div>
+                
+                <div class="finding-card">
+                    <h3 class="finding-title">
+                        <span class="status-icon status-missing">✗</span>
+                        Online Citations
+                    </h3>
+                    <ul class="finding-list">
+                        <li>Only state corporation records found</li>
+                        <li>No directory listings (Yelp, Yellow Pages)</li>
+                        <li>Missing from contractor platforms</li>
+                        <li>No local business citations</li>
+                        <li>Inconsistent NAP information</li>
+                    </ul>
+                </div>
+                
+                <div class="finding-card">
+                    <h3 class="finding-title">
+                        <span class="status-icon status-missing">✗</span>
+                        Content Marketing
+                    </h3>
+                    <ul class="finding-list">
+                        <li>No blog or educational content</li>
+                        <li>No project portfolio online</li>
+                        <li>No customer testimonials</li>
+                        <li>No how-to guides or tips</li>
+                        <li>Missing expertise demonstration</li>
+                    </ul>
+                </div>
+                
+                <div class="finding-card">
+                    <h3 class="finding-title">
+                        <span class="status-icon status-missing">✗</span>
+                        Brand Identity
+                    </h3>
+                    <ul class="finding-list">
+                        <li>No professional logo or branding</li>
+                        <li>No consistent visual identity</li>
+                        <li>No brand messaging or value proposition</li>
+                        <li>No professional marketing materials</li>
+                        <li>Limited brand recognition</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Opportunities -->
+        <section class="glass-container">
+            <h2 class="section-title">
+                🎯 Major Market Opportunities
+            </h2>
+            
+            <div class="opportunity-item">
+                <div class="opportunity-title">Local Carpentry Specialist Positioning</div>
+                <div class="opportunity-desc">No established local carpentry specialist in Orange Park. RAF Carpentry could capture this niche with proper digital presence and specialized positioning.</div>
+            </div>
+            
+            <div class="opportunity-item">
+                <div class="opportunity-title">Search Engine Domination Potential</div>
+                <div class="opportunity-desc">1,950+ monthly searches for carpentry services in Orange Park area. Currently capturing 0% of this traffic due to lack of digital presence.</div>
+            </div>
+            
+            <div class="opportunity-item">
+                <div class="opportunity-title">Premium Service Positioning</div>
+                <div class="opportunity-desc">10+ years local experience provides foundation for premium quality positioning. Market gap exists between budget contractors and high-end specialists.</div>
+            </div>
+            
+            <div class="opportunity-item">
+                <div class="opportunity-title">Content Authority Leadership</div>
+                <div class="opportunity-desc">No local competitors have strong content strategies. Educational content about carpentry could establish RAF as the trusted local expert.</div>
+            </div>
+        </section>
+
+        <!-- Competitive Analysis -->
+        <section class="glass-container">
+            <h2 class="section-title">
+                🏆 Competitive Landscape Analysis
+            </h2>
+            
+            <div class="competitive-analysis">
+                <div class="competitor-card">
+                    <div class="competitor-name">MIP Construction</div>
+                    <div class="competitor-score">7/10 Digital Presence</div>
+                    <div class="competitor-strengths">
+                        <h4>Strengths:</h4>
+                        <ul class="finding-list">
+                            <li>Professional website</li>
+                            <li>A+ BBB rating</li>
+                            <li>Established local reputation</li>
+                            <li>Comprehensive service offerings</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="competitor-card">
+                    <div class="competitor-name">Mr. Handyman (Franchise)</div>
+                    <div class="competitor-score">8/10 Digital Presence</div>
+                    <div class="competitor-strengths">
+                        <h4>Strengths:</h4>
+                        <ul class="finding-list">
+                            <li>Strong brand recognition</li>
+                            <li>Corporate SEO backing</li>
+                            <li>Professional systems</li>
+                            <li>Comprehensive marketing</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="competitor-card">
+                    <div class="competitor-name">Hughes Trim (Regional)</div>
+                    <div class="competitor-score">6/10 Digital Presence</div>
+                    <div class="competitor-strengths">
+                        <h4>Strengths:</h4>
+                        <ul class="finding-list">
+                            <li>Carpentry specialization</li>
+                            <li>Professional website</li>
+                            <li>20+ years experience</li>
+                            <li>Strong portfolio showcase</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="competitor-card">
+                    <div class="competitor-name">Local Independent Contractors</div>
+                    <div class="competitor-score">4/10 Digital Presence</div>
+                    <div class="competitor-strengths">
+                        <h4>Strengths:</h4>
+                        <ul class="finding-list">
+                            <li>Basic Google Business Profiles</li>
+                            <li>Some customer reviews</li>
+                            <li>Local market knowledge</li>
+                            <li>Competitive pricing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Roadmap -->
+        <section class="glass-container">
+            <h2 class="section-title">
+                🚀 Strategic Implementation Roadmap
+            </h2>
+            
+            <div class="roadmap-phase">
+                <div class="phase-title">
+                    <span class="phase-number">1</span>
+                    Foundation Setup (Month 1)
+                </div>
+                <ul class="action-items">
+                    <li>Reactivate Florida business registration status</li>
+                    <li>Establish business phone number and professional email</li>
+                    <li>Create Google Business Profile with complete information</li>
+                    <li>Register professional domain name</li>
+                    <li>Develop basic website with service information</li>
+                </ul>
+            </div>
+            
+            <div class="roadmap-phase">
+                <div class="phase-title">
+                    <span class="phase-number">2</span>
+                    Digital Presence Building (Month 2-3)
+                </div>
+                <ul class="action-items">
+                    <li>Launch professional website with portfolio section</li>
+                    <li>Optimize Instagram account and create Facebook business page</li>
+                    <li>Submit to major business directories (Yelp, Yellow Pages, BBB)</li>
+                    <li>Implement basic SEO optimization for local keywords</li>
+                    <li>Begin customer review collection process</li>
+                </ul>
+            </div>
+            
+            <div class="roadmap-phase">
+                <div class="phase-title">
+                    <span class="phase-number">3</span>
+                    Content & Authority Building (Month 4-6)
+                </div>
+                <ul class="action-items">
+                    <li>Launch regular blog content strategy</li>
+                    <li>Create educational carpentry content and tutorials</li>
+                    <li>Document and showcase completed projects</li>
+                    <li>Build local business partnerships and referral network</li>
+                    <li>Optimize for "carpenter Orange Park FL" keyword rankings</li>
+                </ul>
+            </div>
+            
+            <div class="roadmap-phase">
+                <div class="phase-title">
+                    <span class="phase-number">4</span>
+                    Market Leadership (Month 7-12)
+                </div>
+                <ul class="action-items">
+                    <li>Establish thought leadership through industry content</li>
+                    <li>Expand service area and keyword targeting</li>
+                    <li>Implement advanced digital marketing strategies</li>
+                    <li>Build community involvement and local recognition</li>
+                    <li>Achieve top 3 local search rankings for primary keywords</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Detailed Research Links -->
+        <section class="glass-container">
+            <h2 class="section-title">
+                📋 Detailed Research Documentation
+            </h2>
+            <p style="color: var(--gray); margin-bottom: 2rem;">Access comprehensive analysis behind these findings:</p>
+            
+            <div class="research-links">
+                <a href="../google-business-profile-report.md" class="research-link">
+                    <div class="link-title">Google Business Profile Analysis</div>
+                    <div class="link-desc">Complete local search presence assessment and optimization strategy</div>
+                </a>
+                
+                <a href="../seo-analysis-report.md" class="research-link">
+                    <div class="link-title">SEO & Website Analysis</div>
+                    <div class="link-desc">Technical SEO audit, keyword opportunities, and website development plan</div>
+                </a>
+                
+                <a href="../local-competition-analysis.md" class="research-link">
+                    <div class="link-title">Competitive Intelligence Report</div>
+                    <div class="link-desc">Detailed analysis of local competitors and market positioning opportunities</div>
+                </a>
+                
+                <a href="../online-brand-review.md" class="research-link">
+                    <div class="link-title">Brand Presence Assessment</div>
+                    <div class="link-desc">Current brand analysis and development strategy recommendations</div>
+                </a>
+                
+                <a href="../backlinks-citations-report.md" class="research-link">
+                    <div class="link-title">Citations & Authority Analysis</div>
+                    <div class="link-desc">Backlink profile assessment and local citation building strategy</div>
+                </a>
+                
+                <a href="../blog-content-analysis.md" class="research-link">
+                    <div class="link-title">Content Strategy Report</div>
+                    <div class="link-desc">Content marketing opportunities and editorial strategy development</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Transform Your Digital Presence?</h2>
+            <p class="cta-subtitle">
+                This analysis reveals significant opportunities to establish RAF Carpentry as Orange Park's leading carpentry specialist. 
+                The market is ready, and the competition has gaps that can be filled with the right digital strategy.
+            </p>
+            
+            <div class="contact-info">
+                <div class="contact-item">Website: echoaisystem.com</div>
+                <div class="contact-item">Email: echoaisystems@gmail.com</div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
